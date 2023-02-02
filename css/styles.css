@@ -1,5 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-primary: #34495e;
+  --color-secondary: #ecf0f1;
+  --color-info: #01aff1;
+  --input-outline: #000;
+}
+
 body {
-  /* background: red; */
-  background-color: #34495e;
-  color: #ecf0f1;
+  font-family: 'Lato';
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+.hidden {
+  display: none;
+}
+
+.workout-timer {
+  width: 640px;
+  margin: auto;
+  display: grid;
+  grid-template-rows: 240px, 120px, 120px;
+  grid-gap: 30px;
+  position: relative;
+  align-items: center;
+  justify-items: center;
+}
+
+.current-round {
+  font-size: 200px;
+}
+
+.timer-details {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  font-size: 45px;
+  justify-items: center;
+}
+.elapsed {
+  justify-self: start;
+  text-align: start;
+}
+.intervals {
+  justify-self: center;
+  text-align: center;
+}
+.remaining {
+  justify-self: end;
+  text-align: end;
+}
+
+.description {
+  font-size: 25px;
+}
+
+.buttons {
+  font-size: 50px;
+  display: grid;
+  grid-template-columns: 1fr 4fr 4fr 1fr;
+  width: 100%;
+  justify-items: center;
+}
+
+i:hover {
+  cursor: pointer;
+}
+
+.play-pause {
+  display: inline-block;
 }
