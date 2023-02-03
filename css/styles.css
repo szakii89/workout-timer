@@ -9,6 +9,8 @@
 :root {
   --color-primary: #34495e;
   --color-secondary: #ecf0f1;
+  --color-tertiary: #2ecc71;
+  --color-quaternary: #ecf0f1;
   --color-info: #01aff1;
   --input-outline: #000;
 }
@@ -76,4 +78,27 @@ i:hover {
 
 .play-pause {
   display: inline-block;
+}
+
+.display-rounds {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 3px;
+  width: 100%;
+}
+
+.box {
+  height: 20px;
+}
+
+.box--warm-up {
+  background-color: #777;
+}
+
+.box--round {
+  background-color: var(--color-secondary);
+}
+
+.box--active {
+  background-color: var(--color-tertiary) !important;
 }

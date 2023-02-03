@@ -1,16 +1,16 @@
 const warmUpLength = 3;
-const totalRounds = 5;
+const totalRounds = 45;
 const roundLength = 5;
 const totalLength = totalRounds * roundLength;
 
 // sounds
-const countAllSeconds = false;
-const countDown = 20;
+const countAllSeconds = true;
+const countDown = 0;
 const countUp = 0;
 
 const countAllSecondSound = 'metronome-01';
-// const countDownSound = 'metronome-07';
-const countDownSound = 'metronome-01';
+const countDownSound = 'metronome-07';
+// const countDownSound = 'metronome-01';
 const countUpSound = 'metronome-03';
 const roundStartSound = 'bell-01';
 
@@ -29,6 +29,7 @@ const pauseBtn = document.querySelector('.pause-btn');
 const nextBtn = document.querySelector('.next-btn');
 const prevBtn = document.querySelector('.previous-btn');
 const resetBtn = document.querySelector('.reset-btn');
+const displayRounds = document.querySelector('.display-rounds');
 
 // Transform seconds
 // IDEA - transformSeconds(seconds,'secs') to display ss
@@ -64,6 +65,32 @@ const transformSeconds = (seconds, displaySettings = 'auto') => {
   }
 };
 
+const displayRoundsFunction = () => {
+  let boxes = 0;
+  let html = '';
+  if (warmUpLength) {
+    boxes = 1;
+    html = '<div class="box box--warm-up box-0"></div>';
+  }
+  boxes += totalRounds;
+  for (let i = 1; i < boxes; i++) {
+    html += `<div class="box box--round box-${i}"></div>`;
+  }
+  displayRounds.innerHTML = html;
+  displayRounds.style.gridTemplateColumns = `repeat(${boxes}, 1fr)`;
+  if (boxes <= 6) {
+    displayRounds.style.gridGap = '8px';
+  } else if (boxes > 6 && boxes <= 11) {
+    displayRounds.style.gridGap = '5px';
+  } else if (boxes > 11 && boxes <= 31) {
+    displayRounds.style.gridGap = '3px';
+  } else {
+    displayRounds.style.gridGap = '1px';
+  }
+};
+
+displayRoundsFunction();
+
 const init = (totalRounds, roundLength, totalLength) => {
   currentRoundDetails.innerText = `${
     warmUpLength
@@ -71,8 +98,23 @@ const init = (totalRounds, roundLength, totalLength) => {
       : transformSeconds(roundLength)
   }`;
   intervalsDetails.innerText = `${warmUpLength ? 0 : 1}/${totalRounds}`;
-  elapsedDetails.innerText = `${transformSeconds(0, 'mins')}`;
-  remainingDetails.innerText = `${transformSeconds(totalLength, 'mins')}`;
+  elapsedDetails.innerText = `${
+    totalLength >= 3600
+      ? transformSeconds(0, 'hrs')
+      : totalLength < 3600 && totalLength >= 60
+      ? transformSeconds(0, 'mins')
+      : transformSeconds(0, 'secs')
+  }`;
+  remainingDetails.innerText = `${
+    totalLength >= 3600
+      ? transformSeconds(totalLength, 'hrs')
+      : totalLength < 3600 && totalLength >= 60
+      ? transformSeconds(totalLength, 'mins')
+      : transformSeconds(totalLength, 'secs')
+  }`;
+  document.querySelectorAll('.box').forEach(el => {
+    el.classList.remove('box--active');
+  });
 };
 
 let currentRound = roundLength;
@@ -88,8 +130,8 @@ let elapsedSeconds = 0,
 const addSeconds = () => {
   // TODO - Create a description in the current round
   // If warm up is going display Warm Up and the show the warm up (how many secs left), If the workout is going show the round number and the remaining secs of the current round
-  // TODO - First Show The Warm Up if the app is starting
   if (warmUpLength > warmUpPassed) {
+    document.querySelector('.box-0').classList.add('box--active');
     currentRoundDetails.innerText = transformSeconds(
       warmUpLength - warmUpPassed
     );
@@ -98,6 +140,7 @@ const addSeconds = () => {
     console.log(warmUpPassed);
     if (warmUpLength === warmUpPassed) {
       intervalsDetails.innerText = `${currentInterval}/${totalRounds}`;
+      document.querySelector('.box-0').classList.remove('box--active');
       audioRoundStart.play();
     }
   } else {
@@ -106,6 +149,9 @@ const addSeconds = () => {
     currentRound--;
 
     if (currentRound > 0) {
+      document
+        .querySelector(`.box-${currentInterval}`)
+        .classList.add('box--active');
       if (countAllSeconds) {
         audioCountAll.play();
       } else {
@@ -117,6 +163,9 @@ const addSeconds = () => {
         }
       }
     } else if (currentRound <= 0) {
+      document
+        .querySelector(`.box-${currentInterval}`)
+        .classList.remove('box--active');
       currentInterval++;
       currentRound = roundLength;
       // the ternary operator is for not increase the interval if the workout is over
@@ -128,8 +177,18 @@ const addSeconds = () => {
       audioRoundStart.play();
     }
     currentRoundDetails.innerText = transformSeconds(currentRound);
-    elapsedDetails.innerText = transformSeconds(elapsedSeconds, 'mins');
-    remainingDetails.innerText = transformSeconds(totalRemaining, 'mins');
+    elapsedDetails.innerText =
+      totalLength >= 3600
+        ? transformSeconds(elapsedSeconds, 'hrs')
+        : totalLength < 3600 && totalLength >= 60
+        ? transformSeconds(elapsedSeconds, 'mins')
+        : transformSeconds(elapsedSeconds, 'secs');
+    remainingDetails.innerText =
+      totalLength >= 3600
+        ? transformSeconds(totalRemaining, 'hrs')
+        : totalLength < 3600 && totalLength >= 60
+        ? transformSeconds(totalRemaining, 'mins')
+        : transformSeconds(totalRemaining, 'secs');
   }
 
   if (totalRemaining === 0) {
@@ -150,8 +209,6 @@ const resetTimer = () => {
   playBtn.classList.remove('hidden');
   pauseBtn.classList.add('hidden');
 };
-
-// TODO - Toggle pause and play
 
 //  Start button
 playBtn.addEventListener('click', function () {
