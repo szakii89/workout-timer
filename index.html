@@ -12,8 +12,26 @@
     <title>Workout Timers</title>
   </head>
   <body>
+    <form class="settings">
+      <div class="form-group">
+        <label for="warm-up-length">Warm Up Length</label>
+        <input type="number" name="" id="warm-up-length" />
+      </div>
+      <div class="form-group">
+        <label for="total-rounds">Number Of Rounds</label>
+        <input type="number" name="" id="total-rounds" />
+      </div>
+      <div class="form-group">
+        <label for="round-length">Warm Up Length</label>
+        <input type="number" name="" id="round-length" />
+      </div>
+      <button type="submit" class="btn">Set Workout</button>
+    </form>
     <div class="workout-timer">
-      <div class="current-round">02:00</div>
+      <div class="current-round">
+        <!-- <div class="current-round-message">5 pull ups +40kg</div> -->
+        <div class="current-round-details">02:00</div>
+      </div>
       <div class="timer-details">
         <div class="elapsed">
           <div class="description">Elapsed</div>

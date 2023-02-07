@@ -10,9 +10,7 @@
   --color-primary: #34495e;
   --color-secondary: #ecf0f1;
   --color-tertiary: #2ecc71;
-  --color-quaternary: #ecf0f1;
-  --color-info: #01aff1;
-  --input-outline: #000;
+  /* --color-tertiary: #01aff1; */
 }
 
 body {
@@ -38,6 +36,10 @@ body {
 
 .current-round {
   font-size: 200px;
+  text-align: center;
+}
+.current-round-message {
+  font-size: 50px;
 }
 
 .timer-details {
