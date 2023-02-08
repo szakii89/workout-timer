@@ -13,11 +13,19 @@ const settings = document.querySelector('.settings');
 const warmUplengthEl = document.querySelector('#warm-up-length');
 const totalRoundsEl = document.querySelector('#total-rounds');
 const roundLengthEl = document.querySelector('#round-length');
+const countEverySecondsEl = document.querySelector('#count-every-seconds');
+const countFirstSecondsEl = document.querySelector('#count-first-seconds');
+const countLastSecondsEl = document.querySelector('#count-last-seconds');
+const warmUplengthGroup = document.querySelector('.warm-up-length');
+const totalRoundsGroup = document.querySelector('.group total-rounds');
+const roundLengthGroup = document.querySelector('.group round-length');
+const countEverySecondsGroup = document.querySelector('.count-every-seconds');
+const countFirstSecondsGroup = document.querySelector('.count-first-seconds');
+const countLastSecondsGroup = document.querySelector('.count-last-seconds');
+const settingCloseBtn = document.querySelector('.settings-close');
+const overlay = document.querySelector('.overlay');
 
 // ---------- Audio ----------
-const countAllSeconds = false;
-const countDown = 20;
-const countUp = 0;
 
 const countAllSecondSound = 'metronome-19';
 // const countAllSecondSound = 'blip';
@@ -43,12 +51,25 @@ let totalRounds = 25;
 let roundLength = 120;
 let totalLength = totalRounds * roundLength;
 
+let countAllSeconds = false;
+let countDown = 10;
+let countUp = 0;
+
 let currentRound = roundLength;
 let totalRemaining = totalLength;
 let currentInterval = 1;
 let warmUpPassed = 0;
 let elapsedSeconds = 0;
 let t;
+
+const showSettings = () => {
+  settings.classList.remove('hidden');
+  overlay.classList.remove('hidden');
+};
+const hideSettings = () => {
+  settings.classList.add('hidden');
+  overlay.classList.add('hidden');
+};
 
 // ---------- Functions ----------
 const setWorkout = function (e) {
@@ -57,12 +78,31 @@ const setWorkout = function (e) {
   totalRounds = totalRoundsEl.value * 1;
   roundLength = roundLengthEl.value * 1;
   totalLength = totalRounds * roundLength;
+
+  countAllSeconds = countEverySecondsEl.checked ? true : false;
+  countDown = countFirstSecondsEl.value * 1;
+  countUp = countLastSecondsEl.value * 1;
+
   currentRound = roundLength;
   totalRemaining = totalLength;
   currentInterval = 1;
   warmUpPassed = 0;
   displayRoundsFunction();
   init(totalRounds, roundLength, totalLength);
+  hideSettings();
+};
+
+// Hide / show count first and last 'n' seconds options visibility
+const toggleCountSecondsVisibility = function () {
+  if (this.checked) {
+    countFirstSecondsGroup.classList.add('hidden');
+    countLastSecondsGroup.classList.add('hidden');
+    console.log('Checkbox is checked..');
+  } else {
+    countFirstSecondsGroup.classList.remove('hidden');
+    countLastSecondsGroup.classList.remove('hidden');
+    console.log('Checkbox is not checked..');
+  }
 };
 
 // Transform seconds
@@ -99,6 +139,7 @@ const transformSeconds = (seconds, displaySettings = 'auto') => {
   }
 };
 
+// Display rounds as small rectangles
 const displayRoundsFunction = () => {
   let boxes = 0;
   let html = '';
@@ -125,6 +166,7 @@ const displayRoundsFunction = () => {
   }
 };
 
+// Initial function
 const init = (totalRounds, roundLength, totalLength) => {
   currentRoundDetails.innerText = `${
     warmUpLength
@@ -151,6 +193,7 @@ const init = (totalRounds, roundLength, totalLength) => {
   });
 };
 
+// Count seconds
 const addSeconds = () => {
   // If warm up is going display Warm Up and the show the warm up (how many secs left), If the workout is going show the round number and the remaining secs of the current round
   if (warmUpLength > warmUpPassed) {
@@ -269,6 +312,12 @@ nextBtn.addEventListener('click', nextRound);
 
 // Prev Button
 prevBtn.addEventListener('click', prevRound);
+
+// Hide Settings
+settingCloseBtn.addEventListener('click', hideSettings);
+
+//
+countEverySecondsEl.addEventListener('change', toggleCountSecondsVisibility);
 
 // Init
 displayRoundsFunction();

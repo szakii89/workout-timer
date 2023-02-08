@@ -12,21 +12,37 @@
     <title>Workout Timers</title>
   </head>
   <body>
-    <form class="settings">
-      <div class="form-group">
-        <label for="warm-up-length">Warm Up Length</label>
-        <input type="number" name="" id="warm-up-length" />
-      </div>
-      <div class="form-group">
-        <label for="total-rounds">Number Of Rounds</label>
-        <input type="number" name="" id="total-rounds" />
-      </div>
-      <div class="form-group">
-        <label for="round-length">Warm Up Length</label>
-        <input type="number" name="" id="round-length" />
-      </div>
-      <button type="submit" class="btn">Set Workout</button>
-    </form>
+    <div class="settings">
+      <button class="settings-close">&times;</button>
+      <h2 class="settings-title">Settings</h2>
+      <form class="settings-form">
+        <div class="form-group warm-up-length">
+          <label for="warm-up-length">Warm Up Length</label>
+          <input type="number" name="" id="warm-up-length" />
+        </div>
+        <div class="form-group total-rounds">
+          <label for="total-rounds">Number Of Rounds</label>
+          <input type="number" name="" id="total-rounds" />
+        </div>
+        <div class="form-group round-length">
+          <label for="round-length">Round Length</label>
+          <input type="number" name="" id="round-length" />
+        </div>
+        <div class="form-group count-every-seconds">
+          <label for="count-every-seconds">Count every seconds</label>
+          <input type="checkbox" name="" id="count-every-seconds" />
+        </div>
+        <div class="form-group count-first-seconds">
+          <label for="count-first-seconds">Count first 'n' seconds</label>
+          <input type="number" name="" id="count-first-seconds" />
+        </div>
+        <div class="form-group count-last-seconds">
+          <label for="count-last-seconds">Count last 'n' seconds</label>
+          <input type="number" name="" id="count-last-seconds" />
+        </div>
+        <button type="submit" class="btn">Set Workout</button>
+      </form>
+    </div>
     <div class="workout-timer">
       <div class="current-round">
         <!-- <div class="current-round-message">5 pull ups +40kg</div> -->
@@ -66,6 +82,7 @@
         <div class="box box--round"></div>
       </div>
     </div>
+    <div class="overlay"></div>
 
     <script src="js/script.js"></script>
   </body>
