@@ -86,9 +86,17 @@ input[type='number']:focus {
   filter: darkness(1.5);
 }
 
+input[type='number']:disabled {
+  background: #777;
+}
+
 /* Hide Arrows */
 input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+
+input[type='checkbox'] {
+  display: block;
 }
 
 .btn {
@@ -97,21 +105,30 @@ input[type='number']::-webkit-inner-spin-button {
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;
-  background: var(--color-secondary);
-  color: var(--color-primary);
+  background: var(--color-blue);
+  color: var(--color-secondary);
   cursor: pointer;
   margin-top: 20px;
 }
 
+/* .btn:hover {
+  transform: scale(1.1);
+} */
+
 .workout-timer {
   width: 640px;
-  margin: auto;
+  margin: 10px auto;
   display: grid;
   grid-template-rows: 240px, 120px, 120px;
   grid-gap: 30px;
   position: relative;
   align-items: center;
   justify-items: center;
+}
+
+.settings-btn {
+  font-size: 30px;
+  justify-self: end;
 }
 
 .current-round {

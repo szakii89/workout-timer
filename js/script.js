@@ -1,4 +1,5 @@
 // ---------- Elements ----------
+const settingsBtn = document.querySelector('.settings-btn');
 const currentRoundDetails = document.querySelector('.current-round-details');
 const elapsedDetails = document.querySelector('.elapsed-details');
 const intervalsDetails = document.querySelector('.intervals-details');
@@ -80,8 +81,8 @@ const setWorkout = function (e) {
   totalLength = totalRounds * roundLength;
 
   countAllSeconds = countEverySecondsEl.checked ? true : false;
-  countDown = countFirstSecondsEl.value * 1;
-  countUp = countLastSecondsEl.value * 1;
+  countDown = countLastSecondsEl.value * 1;
+  countUp = countFirstSecondsEl.value * 1;
 
   currentRound = roundLength;
   totalRemaining = totalLength;
@@ -89,18 +90,19 @@ const setWorkout = function (e) {
   warmUpPassed = 0;
   displayRoundsFunction();
   init(totalRounds, roundLength, totalLength);
+  resetSettings();
   hideSettings();
 };
 
-// Hide / show count first and last 'n' seconds options visibility
-const toggleCountSecondsVisibility = function () {
+// Disable / Enable count first and last 'n' seconds options visibility
+const toggleSecondsOption = function () {
   if (this.checked) {
-    countFirstSecondsGroup.classList.add('hidden');
-    countLastSecondsGroup.classList.add('hidden');
+    countFirstSecondsEl.disabled = true;
+    countLastSecondsEl.disabled = true;
     console.log('Checkbox is checked..');
   } else {
-    countFirstSecondsGroup.classList.remove('hidden');
-    countLastSecondsGroup.classList.remove('hidden');
+    countFirstSecondsEl.disabled = false;
+    countLastSecondsEl.disabled = false;
     console.log('Checkbox is not checked..');
   }
 };
@@ -166,33 +168,6 @@ const displayRoundsFunction = () => {
   }
 };
 
-// Initial function
-const init = (totalRounds, roundLength, totalLength) => {
-  currentRoundDetails.innerText = `${
-    warmUpLength
-      ? transformSeconds(warmUpLength)
-      : transformSeconds(roundLength)
-  }`;
-  intervalsDetails.innerText = `${warmUpLength ? 0 : 1}/${totalRounds}`;
-  elapsedDetails.innerText = `${
-    totalLength >= 3600
-      ? transformSeconds(0, 'hrs')
-      : totalLength < 3600 && totalLength >= 60
-      ? transformSeconds(0, 'mins')
-      : transformSeconds(0, 'secs')
-  }`;
-  remainingDetails.innerText = `${
-    totalLength >= 3600
-      ? transformSeconds(totalLength, 'hrs')
-      : totalLength < 3600 && totalLength >= 60
-      ? transformSeconds(totalLength, 'mins')
-      : transformSeconds(totalLength, 'secs')
-  }`;
-  document.querySelectorAll('.box').forEach(el => {
-    el.classList.remove('box--active');
-  });
-};
-
 // Count seconds
 const addSeconds = () => {
   // If warm up is going display Warm Up and the show the warm up (how many secs left), If the workout is going show the round number and the remaining secs of the current round
@@ -202,8 +177,6 @@ const addSeconds = () => {
       warmUpLength - warmUpPassed
     );
     warmUpPassed++;
-    console.log(currentRoundDetails);
-    console.log(warmUpPassed);
     if (warmUpLength === warmUpPassed) {
       intervalsDetails.innerText = `${currentInterval}/${totalRounds}`;
       document.querySelector('.box-0').classList.remove('box--active');
@@ -276,6 +249,22 @@ const resetTimer = () => {
   pauseBtn.classList.add('hidden');
 };
 
+// Pause function
+const pauseClick = function () {
+  playBtn.classList.toggle('hidden');
+  pauseBtn.classList.toggle('hidden');
+  // audioPause.play();
+  pauseTimer();
+};
+
+// Play function
+const playClick = function () {
+  playBtn.classList.toggle('hidden');
+  pauseBtn.classList.toggle('hidden');
+  // audioUnpause.play();
+  timer();
+};
+
 const nextRound = () => {
   console.log('next');
 };
@@ -284,25 +273,56 @@ const prevRound = () => {
   console.log('prev');
 };
 
+// Reset settings
+const resetSettings = () => {
+  warmUplengthEl.value = '';
+  totalRoundsEl.value = '';
+  roundLengthEl.value = '';
+  countEverySecondsEl.checked = false;
+  countLastSecondsEl.value = '';
+  countFirstSecondsEl.value = '';
+  countFirstSecondsEl.disabled = false;
+  countLastSecondsEl.disabled = false;
+};
+
+// Initial function
+const init = (totalRounds, roundLength, totalLength) => {
+  console.log(`Countdown :${countDown}`);
+  console.log(`Countup :${countUp}`);
+  currentRoundDetails.innerText = `${
+    warmUpLength
+      ? transformSeconds(warmUpLength)
+      : transformSeconds(roundLength)
+  }`;
+  intervalsDetails.innerText = `${warmUpLength ? 0 : 1}/${totalRounds}`;
+  elapsedDetails.innerText = `${
+    totalLength >= 3600
+      ? transformSeconds(0, 'hrs')
+      : totalLength < 3600 && totalLength >= 60
+      ? transformSeconds(0, 'mins')
+      : transformSeconds(0, 'secs')
+  }`;
+  remainingDetails.innerText = `${
+    totalLength >= 3600
+      ? transformSeconds(totalLength, 'hrs')
+      : totalLength < 3600 && totalLength >= 60
+      ? transformSeconds(totalLength, 'mins')
+      : transformSeconds(totalLength, 'secs')
+  }`;
+  document.querySelectorAll('.box').forEach(el => {
+    el.classList.remove('box--active');
+  });
+};
+
 // ---------- Event Listeners ----------
 // Set Workout
 settings.addEventListener('submit', setWorkout);
 
 //  Start button
-playBtn.addEventListener('click', function () {
-  playBtn.classList.toggle('hidden');
-  pauseBtn.classList.toggle('hidden');
-  // audioUnpause.play();
-  timer();
-});
+playBtn.addEventListener('click', playClick);
 
 //  Pause button
-pauseBtn.addEventListener('click', function () {
-  playBtn.classList.toggle('hidden');
-  pauseBtn.classList.toggle('hidden');
-  // audioPause.play();
-  pauseTimer();
-});
+pauseBtn.addEventListener('click', pauseClick);
 
 //  Stop button
 resetBtn.addEventListener('click', resetTimer);
@@ -313,19 +333,36 @@ nextBtn.addEventListener('click', nextRound);
 // Prev Button
 prevBtn.addEventListener('click', prevRound);
 
+// Show Settings
+settingsBtn.addEventListener('click', showSettings);
+
 // Hide Settings
 settingCloseBtn.addEventListener('click', hideSettings);
 
 //
-countEverySecondsEl.addEventListener('change', toggleCountSecondsVisibility);
+countEverySecondsEl.addEventListener('change', toggleSecondsOption);
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function (e) {
+  console.log(e);
+  if (e.key === 'Escape' && !settings.classList.contains('hidden')) {
+    hideSettings();
+  } else if (e.key === 's' && settings.classList.contains('hidden')) {
+    showSettings();
+  } else if (e.key === 's' && !settings.classList.contains('hidden')) {
+    hideSettings();
+  } else if (e.key === ' ' && playBtn.classList.contains('hidden')) {
+    pauseClick();
+  } else if (e.key === ' ' && !playBtn.classList.contains('hidden')) {
+    playClick();
+  }
+});
 
 // Init
 displayRoundsFunction();
 init(totalRounds, roundLength, totalLength);
 
-// TODO - Add .overlay
-// TODO - format settings in CSS
-// TODO - Hide settings
+// TODO - Justify checkbox in settings to left
 
 // TODO - Implement next/prev buttons
 

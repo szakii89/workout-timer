@@ -12,7 +12,7 @@
     <title>Workout Timers</title>
   </head>
   <body>
-    <div class="settings">
+    <div class="settings hidden">
       <button class="settings-close">&times;</button>
       <h2 class="settings-title">Settings</h2>
       <form class="settings-form">
@@ -44,6 +44,7 @@
       </form>
     </div>
     <div class="workout-timer">
+      <div class="settings-btn"><i class="fas fa-cog"></i></div>
       <div class="current-round">
         <!-- <div class="current-round-message">5 pull ups +40kg</div> -->
         <div class="current-round-details">02:00</div>
@@ -82,7 +83,7 @@
         <div class="box box--round"></div>
       </div>
     </div>
-    <div class="overlay"></div>
+    <div class="overlay hidden"></div>
 
     <script src="js/script.js"></script>
   </body>
