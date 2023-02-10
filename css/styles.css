@@ -188,6 +188,26 @@ i:hover {
 
 .box {
   height: 20px;
+  position: relative;
+}
+
+.box-info {
+  width: 100px;
+  visibility: hidden;
+  background-color: var(--color-blue);
+  position: absolute;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  top: 120%;
+  left: 50%;
+  white-space: pre-line;
+
+  transform: translateX(-50%);
+}
+
+.box:hover .box-info {
+  visibility: visible;
 }
 
 .box--warm-up {

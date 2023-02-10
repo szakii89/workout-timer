@@ -147,12 +147,18 @@ const displayRoundsFunction = () => {
   let html = '';
   if (warmUpLength) {
     boxes = 1;
-    html = '<div class="box box--warm-up box-0"></div>';
+    html = `<div class="box box--warm-up box-0" >
+    <span class="box-info">Warm Up
+    ${transformSeconds(warmUpLength)}</span>
+    </div>`;
   }
   let startCounting = boxes;
   boxes += totalRounds;
   for (let i = startCounting; i < boxes; i++) {
-    html += `<div class="box box--round box-${i}"></div>`;
+    html += `<div class="box box--round box-${i}">
+    <span class="box-info">Round ${i}
+    ${transformSeconds(roundLength)}</span>
+    </div>`;
   }
 
   displayRounds.innerHTML = html;
