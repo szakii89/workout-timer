@@ -89,7 +89,8 @@ const setWorkout = function (e) {
   currentInterval = 1;
   warmUpPassed = 0;
   displayRoundsFunction();
-  init(totalRounds, roundLength, totalLength);
+  // init(totalRounds, roundLength, totalLength);
+  resetTimer();
   resetSettings();
   hideSettings();
 };
@@ -293,8 +294,6 @@ const resetSettings = () => {
 
 // Initial function
 const init = (totalRounds, roundLength, totalLength) => {
-  console.log(`Countdown :${countDown}`);
-  console.log(`Countup :${countUp}`);
   currentRoundDetails.innerText = `${
     warmUpLength
       ? transformSeconds(warmUpLength)
@@ -350,7 +349,6 @@ countEverySecondsEl.addEventListener('change', toggleSecondsOption);
 
 // Keyboard shortcuts
 document.addEventListener('keydown', function (e) {
-  console.log(e);
   if (e.key === 'Escape' && !settings.classList.contains('hidden')) {
     hideSettings();
   } else if (e.key === 's' && settings.classList.contains('hidden')) {
