@@ -84,12 +84,7 @@ const setWorkout = function (e) {
   countDown = countLastSecondsEl.value * 1;
   countUp = countFirstSecondsEl.value * 1;
 
-  currentRound = roundLength;
-  totalRemaining = totalLength;
-  currentInterval = 1;
-  warmUpPassed = 0;
   displayRoundsFunction();
-  // init(totalRounds, roundLength, totalLength);
   resetTimer();
   resetSettings();
   hideSettings();
@@ -248,12 +243,15 @@ const addSeconds = () => {
 const timer = () => (t = setTimeout(addSeconds, 1000));
 const pauseTimer = () => clearTimeout(t);
 const resetTimer = () => {
-  pauseTimer();
-  init(totalRounds, roundLength, totalLength);
+  clearTimeout(t);
   elapsedSeconds = 0;
+  currentRound = roundLength;
+  totalRemaining = totalLength;
+  currentInterval = 1;
   warmUpPassed = 0;
   playBtn.classList.remove('hidden');
   pauseBtn.classList.add('hidden');
+  init(totalRounds, roundLength, totalLength);
 };
 
 // Pause function
