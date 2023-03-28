@@ -27,7 +27,6 @@ const settingCloseBtn = document.querySelector('.settings-close');
 const overlay = document.querySelector('.overlay');
 
 // ---------- Audio ----------
-
 const countAllSecondSound = 'metronome-19';
 // const countAllSecondSound = 'blip';
 // const countDownSound = 'metronome-07';
@@ -63,6 +62,12 @@ let warmUpPassed = 0;
 let elapsedSeconds = 0;
 let t;
 
+// This is for fixing the inaccuracy of the timer
+let lastCallTime = Date.now();
+let delay = 1000;
+
+// ---------- Functions ----------
+// Show / Hide Settings
 const showSettings = () => {
   settings.classList.remove('hidden');
   overlay.classList.remove('hidden');
@@ -72,7 +77,6 @@ const hideSettings = () => {
   overlay.classList.add('hidden');
 };
 
-// ---------- Functions ----------
 const setWorkout = function (e) {
   e.preventDefault();
   warmUpLength = warmUplengthEl.value * 1;
@@ -236,11 +240,21 @@ const addSeconds = () => {
     console.log(totalRemaining);
     clearInterval(t);
   } else {
-    timer();
+    // This is for fixing the inaccurace of the timer, which came from setTimeout(addSeconds,1000). This will execute
+
+    // Calculate the delay based on the elapsed time since the last call
+    const now = Date.now();
+    console.log(`Elapsed time: ${now - lastCallTime}`);
+    delay = Math.max(0, 1000 - (now - lastCallTime));
+    lastCallTime = now + delay;
+
+    // Schedule the next call to addSeconds after the delay
+    timer(delay);
   }
 };
 
-const timer = () => (t = setTimeout(addSeconds, 1000));
+// let n = 1;
+const timer = delay => (t = setTimeout(addSeconds, delay));
 const pauseTimer = () => clearTimeout(t);
 const resetTimer = () => {
   clearTimeout(t);
@@ -267,7 +281,7 @@ const playClick = function () {
   playBtn.classList.toggle('hidden');
   pauseBtn.classList.toggle('hidden');
   // audioUnpause.play();
-  timer();
+  timer(delay);
 };
 
 const nextRound = () => {
@@ -363,8 +377,6 @@ document.addEventListener('keydown', function (e) {
 // Init
 displayRoundsFunction();
 init(totalRounds, roundLength, totalLength);
-
-// TODO - Justify checkbox in settings to left
 
 // TODO - Implement next/prev buttons
 
